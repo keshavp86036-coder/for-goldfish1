@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Goldfish 🎄</title>
+<style>
+  body {
+    margin: 0;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    background: linear-gradient(to right, #fff8f0, #ffe6f0);
+    overflow: hidden;
+  }
+  .slide-container {
+    width: 90%;
+    max-width: 500px;
+    text-align: center;
+    position: relative;
+    margin: auto;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .slide {
+    display: none;
+    padding: 25px;
+    border-radius: 15px;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    font-size: 1.4em;
+    color: #333;
+    min-height: 220px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.7s;
+  }
+  .active {
+    display: flex;
+  }
+  .nav {
+    position: absolute;
+    top: 50%;
+    font-size: 2em;
+    cursor: pointer;
+    user-select: none;
+    color: #ff6f91;
+    background: rgba(255,255,255,0.6);
+    border-radius: 50%;
+    padding: 5px 12px;
+    transform: translateY(-50%);
+  }
+  .prev { left: -60px; }
+  .next { right: -60px; }
+
+  /* Snowflakes */
+  .snowflake {
+    position: fixed;
+    top: -10px;
+    color: #fff;
+    font-size: 1.5em;
+    user-select: none;
+    pointer-events: none;
+    animation-name: fall;
+    animation-duration: 10s;
+    animation-iteration-count: infinite;
+  }
+  @keyframes fall {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+  }
+
+  /* Confetti hearts */
+  .heart {
+    position: fixed;
+    font-size: 1.5em;
+    animation: floatUp 4s linear infinite;
+  }
+  @keyframes floatUp {
+    0% { transform: translateY(100vh) scale(0.5); opacity: 1; }
+    100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="slide-container">
+  <div class="slide active">🎄 Merry Christmas, Goldfish! 🎄</div>
+  <div class="slide">You are the cutest gift I could ever ask for 🐠</div>
+  <div class="slide">Your smile lights up my day ✨</div>
+  <div class="slide">I hope this Christmas fills you with joy and love ❤️</div>
+  <div class="slide">Just remember… you are very special to me 💌</div>
+
+  <span class="nav prev" onclick="changeSlide(-1)">&#10094;</span>
+  <span class="nav next" onclick="changeSlide(1)">&#10095;</span>
+</div>
+
+<!-- Optional Music -->
+<audio id="music" loop>
+  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+let currentSlide = 0;
+const slides = document.querySelectorAll('.slide');
+
+function showSlide(index) {
+  slides.forEach((slide, i) => {
+    slide.classList.remove('active');
+    if(i === index) slide.classList.add('active');
+  });
+}
+
+function changeSlide(direction) {
+  currentSlide += direction;
+  if(currentSlide >= slides.length) currentSlide = 0;
+  if(currentSlide < 0) currentSlide = slides.length - 1;
+  showSlide(currentSlide);
+}
+
+// Auto-slide every 5 seconds
+setInterval(() => { changeSlide(1); }, 5000);
+
+// Add snowflakes
+function createSnow() {
+  const snow = document.createElement('div');
+  snow.classList.add('snowflake');
+  snow.style.left = Math.random() * 100 + 'vw';
+  snow.style.fontSize = Math.random() * 20 + 10 + 'px';
+  snow.style.animationDuration = 5 + Math.random() * 10 + 's';
+  snow.innerText = '❄';
+  document.body.appendChild(snow);
+  setTimeout(() => snow.remove(), 10000);
+}
+setInterval(createSnow, 300);
+
+// Add hearts confetti
+function createHeart() {
+  const heart = document.createElement('div');
+  heart.classList.add('heart');
+  heart.style.left = Math.random() * 100 + 'vw';
+  heart.style.fontSize = Math.random() * 20 + 10 + 'px';
+  heart.innerText = '❤️';
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), 4000);
+}
+setInterval(createHeart, 500);
+
+// Play music on first click (mobile-friendly)
+document.body.addEventListener('click', () => {
+  document.getElementById('music').play();
+}, { once: true });
+</script>
+
+</body>
+</html>
